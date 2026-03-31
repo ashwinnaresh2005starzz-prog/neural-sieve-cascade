@@ -153,13 +153,27 @@ The project was evaluated on a large-scale malicious URL dataset containing **65
 - **Phishing:** 94,111
 - **Malware:** 32,520
 
-### Dataset Format
-The working data in this repository is stored as:
+## Dataset
+
+This project uses the Kaggle **Malicious URLs dataset** for four-class malicious URL classification.
+
+- **Total URLs:** 651,191
+- **Classes:** Benign, Defacement, Phishing, Malware
+
+### Repository File
 - `data/malicious_phish_CSV.csv`
 
-The overall task is a **4-class classification problem**.
+### Original Source
+- Kaggle: *Malicious URLs dataset* by `sid321axn`
 
----
+### Example URLs
+
+| url | label |
+|---|---|
+| `https://google.com` | benign |
+| `http://www.garage-pirenne.be/index.php?option=com_content&view=article&id=70&vsig70_0=15` | defacement |
+| `http://secure-login.bank.verify-pay.com` | phishing |
+
 
 ## Experimental Setup
 
@@ -339,3 +353,10 @@ a **multi-sieve architecture** can provide strong security performance while rem
 ├── README.md
 ├── requirements.txt
 └── .gitignore
+
+## Quickstart
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/ashwinnaresh2005starzz-prog/neural-sieve-cascade.git
+cd neural-sieve-cascade
