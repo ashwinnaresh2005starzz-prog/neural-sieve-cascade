@@ -1,8 +1,8 @@
 # Neural Sieve Cascade (NSC)
 
-Neural Sieve Cascade (NSC) is a confidence-driven three-stage malicious URL detection framework designed to balance **speed**, **accuracy**, and **real-time feasibility**. Instead of sending every URL directly to a heavy deep model, NSC progressively filters URLs through multiple sieves: a lightweight lexical model first, a deep learning ensemble second, and a transformer-based final resolver for the hardest cases.
+Neural Sieve Cascade (NSC) is a **confidence-driven three-stage malicious URL detection framework** designed to balance **speed**, **accuracy**, and **real-time feasibility**. Instead of sending every URL directly to a heavy deep model, NSC progressively filters URLs through multiple sieves: a lightweight lexical model first, a deep learning ensemble second, and a transformer-based final resolver for the hardest cases.
 
-This project focuses on **four-class malicious URL classification**:
+This project performs **four-class malicious URL classification** across:
 - **Benign**
 - **Defacement**
 - **Malware**
@@ -16,7 +16,8 @@ This project focuses on **four-class malicious URL classification**:
 - Combines **TF-IDF + Logistic Regression**, **CNN/LSTM/BiLSTM voting**, and **TinyBERT**
 - Supports **four-class classification**: benign, defacement, phishing, malware
 - Achieved **97.92% final accuracy** on a **651,191 URL** dataset
-- Designed to improve **real-time efficiency** by escalating only low-confidence samples
+- Designed for **real-time efficiency** by escalating only low-confidence samples
+- Includes **workflow diagram, result plots, project paper, and end-to-end notebook**
 
 ---
 
@@ -48,7 +49,7 @@ Neural Sieve Cascade was designed to address that trade-off.
 
 The main idea behind NSC is simple:
 
-> easy URLs should be classified quickly, while only difficult URLs should consume deeper and more expensive models.
+> Easy URLs should be classified quickly, while only difficult URLs should consume deeper and more expensive models.
 
 This leads to a **three-stage cascade**:
 
@@ -57,6 +58,14 @@ This leads to a **three-stage cascade**:
 3. **Sieve-3** processes only the most ambiguous URLs using TinyBERT  
 
 This staged design improves computational efficiency while preserving high final detection performance.
+
+---
+
+## Workflow
+
+<p align="center">
+  <img src="assets/images/workflow.png" alt="NSC Workflow" width="560">
+</p>
 
 ---
 
@@ -128,14 +137,6 @@ This prevents expensive models from being used on every URL and keeps the pipeli
 
 ---
 
-## Workflow
-
-<p align="center">
-  <img src="assets/images/workflow.png" alt="NSC Workflow" width="520">
-</p>
-
----
-
 ## Illustrative Example
 
 An adversarial URL such as:
@@ -182,13 +183,15 @@ This project uses the Kaggle **Malicious URLs dataset** for four-class malicious
 | `http://www.garage-pirenne.be/index.php?option=com_content&view=article&id=70&vsig70_0=15` | defacement |
 | `br-icloud.com.br` | phishing |
 
+The overall task is a **4-class classification problem**.
+
 ---
 
 ## Experimental Setup
 
 The experiments were developed and run in a notebook-based workflow.
 
-### Main tools used
+### Main Tools Used
 - Python
 - Scikit-learn
 - TensorFlow / Keras
@@ -199,7 +202,7 @@ The experiments were developed and run in a notebook-based workflow.
 - Jupyter / Google Colab
 
 ### Training Environment
-The paper reports training in **Google Colab** using:
+The project paper reports training in **Google Colab** using:
 - NVIDIA Tesla T4 GPU
 - 12.7 GB RAM
 - 15 GB GPU memory
@@ -222,7 +225,7 @@ The paper reports training in **Google Colab** using:
 - Dense layer with 64 ReLU units
 - Softmax output
 
-#### CNN strength
+#### CNN Strength
 Useful for detecting lexical distortions such as:
 - homograph-style manipulations
 - short suspicious token patterns
@@ -234,7 +237,7 @@ Useful for detecting lexical distortions such as:
 - Dense layer with 64 ReLU units
 - Softmax output
 
-#### LSTM strength
+#### LSTM Strength
 Useful for learning:
 - token order
 - longer sequential patterns
@@ -245,7 +248,7 @@ Useful for learning:
 - Better sequence context from both directions
 - Stronger handling of complex URL structure
 
-#### BiLSTM strength
+#### BiLSTM Strength
 Useful for:
 - camouflaged subdomains
 - context-sensitive sequential inconsistencies
@@ -303,7 +306,7 @@ This demonstrates the practical value of the cascade for resource-efficient mali
 ## Results Snapshot
 
 <p align="center">
-  <img src="assets/images/accuracy_comparison.png" alt="Accuracy Comparison" width="700">
+  <img src="assets/images/accuracy_comparison.png" alt="Accuracy Comparison" width="760">
 </p>
 
 <details>
@@ -311,19 +314,19 @@ This demonstrates the practical value of the cascade for resource-efficient mali
   <br>
 
   <p align="center">
-    <img src="assets/images/confusion_matrix.png" alt="Confusion Matrix" width="520">
+    <img src="assets/images/confusion_matrix.png" alt="Confusion Matrix" width="560">
   </p>
 
   <p align="center">
-    <img src="assets/images/precision.png" alt="Precision Comparison" width="700">
+    <img src="assets/images/precision.png" alt="Precision Comparison" width="760">
   </p>
 
   <p align="center">
-    <img src="assets/images/recall.png" alt="Recall Comparison" width="700">
+    <img src="assets/images/recall.png" alt="Recall Comparison" width="760">
   </p>
 
   <p align="center">
-    <img src="assets/images/f1_score.png" alt="F1-score Comparison" width="700">
+    <img src="assets/images/f1_score.png" alt="F1-score Comparison" width="760">
   </p>
 
 </details>
