@@ -1,19 +1,5 @@
 # Neural Sieve Cascade (NSC)
 
-<p align="center">
-  <strong>Confidence-Driven Multi-Sieve Malicious URL Detection</strong><br>
-  Logistic Regression + TF-IDF → CNN/LSTM/BiLSTM Ensemble → TinyBERT
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Task-Malicious%20URL%20Detection-blue" alt="Task">
-  <img src="https://img.shields.io/badge/Classes-4-success" alt="Classes">
-  <img src="https://img.shields.io/badge/Accuracy-97.92%25-brightgreen" alt="Accuracy">
-  <img src="https://img.shields.io/badge/Dataset-651191%20URLs-orange" alt="Dataset Size">
-</p>
-
----
-
 ## Overview
 
 Neural Sieve Cascade (NSC) is a **confidence-driven three-stage malicious URL detection framework** designed to balance **speed**, **accuracy**, and **real-time feasibility**.
