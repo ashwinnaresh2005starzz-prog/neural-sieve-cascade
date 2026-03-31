@@ -1,12 +1,22 @@
 # Neural Sieve Cascade (NSC)
 
-Neural Sieve Cascade (NSC) is a confidence-driven three-stage malicious URL detection framework built to balance **speed**, **accuracy**, and **real-time feasibility**. Instead of sending every URL directly to a heavy deep model, NSC progressively filters URLs through multiple sieves: a lightweight lexical model first, a deep learning ensemble second, and a transformer-based final resolver for the hardest cases.
+Neural Sieve Cascade (NSC) is a confidence-driven three-stage malicious URL detection framework designed to balance **speed**, **accuracy**, and **real-time feasibility**. Instead of sending every URL directly to a heavy deep model, NSC progressively filters URLs through multiple sieves: a lightweight lexical model first, a deep learning ensemble second, and a transformer-based final resolver for the hardest cases.
 
 This project focuses on **four-class malicious URL classification**:
 - **Benign**
 - **Defacement**
 - **Malware**
 - **Phishing**
+
+---
+
+## Highlights
+
+- Confidence-driven **three-stage malicious URL detection pipeline**
+- Combines **TF-IDF + Logistic Regression**, **CNN/LSTM/BiLSTM voting**, and **TinyBERT**
+- Supports **four-class classification**: benign, defacement, phishing, malware
+- Achieved **97.92% final accuracy** on a **651,191 URL** dataset
+- Designed to improve **real-time efficiency** by escalating only low-confidence samples
 
 ---
 
@@ -36,7 +46,7 @@ Neural Sieve Cascade was designed to address that trade-off.
 
 ## Core Idea
 
-The central idea behind NSC is simple:
+The main idea behind NSC is simple:
 
 > easy URLs should be classified quickly, while only difficult URLs should consume deeper and more expensive models.
 
@@ -52,57 +62,57 @@ This staged design improves computational efficiency while preserving high final
 
 ## System Architecture
 
-## Sieve-1: Logistic Regression + TF-IDF
+### Sieve-1: Logistic Regression + TF-IDF
 The first stage acts as a **fast statistical gatekeeper**.
 
-### Method
+#### Method
 - Character-level **TF-IDF**
 - **Logistic Regression** classifier
 
-### Role
+#### Role
 - Captures lightweight lexical signals
 - Quickly separates obvious benign or malicious patterns
 - Handles the majority of URLs with minimal latency
 
-### Confidence Rule
+#### Confidence Rule
 If the maximum prediction confidence is **>= 0.90**, the prediction is accepted.  
 Otherwise, the URL is escalated to **Sieve-2**.
 
 ---
 
-## Sieve-2: Deep Learning Ensemble
+### Sieve-2: Deep Learning Ensemble
 The second stage handles URLs that are not confidently resolved by Sieve-1.
 
-### Ensemble Components
+#### Ensemble Components
 - **CNN**
 - **LSTM**
 - **BiLSTM**
 
-### Why these models?
+#### Why these models?
 - **CNN** captures local lexical distortions and short character-level patterns
 - **LSTM** captures long-range sequential dependencies across URL tokens
 - **BiLSTM** improves contextual understanding by processing the sequence in both directions
 
-### Ensemble Strategy
+#### Ensemble Strategy
 The three models are combined using **soft voting**.
 
-### Confidence Rule
+#### Confidence Rule
 If the ensemble confidence is **>= 0.90**, the prediction is accepted.  
 Otherwise, the URL is escalated to **Sieve-3**.
 
 ---
 
-## Sieve-3: TinyBERT
+### Sieve-3: TinyBERT
 The final stage is reserved for the hardest and most ambiguous URLs.
 
-### Role
+#### Role
 - Captures long-distance dependencies
 - Handles adversarial token insertions
 - Better understands context-rich and semantically difficult patterns
 - Improves resolution of phishing and malware cases that may confuse shallow or sequence-only models
 
-### Configuration
-TinyBERT was used as the final transformer-based resolver for samples that remained uncertain after the first two sieves.
+#### Configuration
+TinyBERT is used as the final transformer-based resolver for samples that remain uncertain after the first two sieves.
 
 ---
 
@@ -118,9 +128,11 @@ This prevents expensive models from being used on every URL and keeps the pipeli
 
 ---
 
-## Workflow Diagram
+## Workflow
 
-![NSC Workflow](assets/images/workflow.png)
+<p align="center">
+  <img src="assets/images/workflow.png" alt="NSC Workflow" width="520">
+</p>
 
 ---
 
@@ -145,20 +157,16 @@ This example highlights the design goal of NSC:
 
 ## Dataset
 
-The project was evaluated on a large-scale malicious URL dataset containing **651,191 URLs**.
+This project uses the Kaggle **Malicious URLs dataset** for four-class malicious URL classification.
+
+- **Total URLs:** 651,191
+- **Classes:** Benign, Defacement, Phishing, Malware
 
 ### Class Distribution
 - **Benign:** 428,103
 - **Defacement:** 96,457
 - **Phishing:** 94,111
 - **Malware:** 32,520
-
-## Dataset
-
-This project uses the Kaggle **Malicious URLs dataset** for four-class malicious URL classification.
-
-- **Total URLs:** 651,191
-- **Classes:** Benign, Defacement, Phishing, Malware
 
 ### Repository File
 - `data/malicious_phish_CSV.csv`
@@ -170,10 +178,11 @@ This project uses the Kaggle **Malicious URLs dataset** for four-class malicious
 
 | url | label |
 |---|---|
-| `https://google.com` | benign |
+| `mp3raid.com/music/krizz_kaliko.html` | benign |
 | `http://www.garage-pirenne.be/index.php?option=com_content&view=article&id=70&vsig70_0=15` | defacement |
-| `http://secure-login.bank.verify-pay.com` | phishing |
+| `br-icloud.com.br` | phishing |
 
+---
 
 ## Experimental Setup
 
@@ -200,12 +209,12 @@ The paper reports training in **Google Colab** using:
 
 ## Model Design Details
 
-## Sieve-1
+### Sieve-1
 - TF-IDF over character-level n-grams
 - Logistic Regression baseline
 - Designed for ultra-fast inference
 
-## Sieve-2 CNN
+### Sieve-2 CNN
 - Embedding dimension: 128
 - 1D convolution with 128 filters
 - Kernel size: 5
@@ -213,46 +222,46 @@ The paper reports training in **Google Colab** using:
 - Dense layer with 64 ReLU units
 - Softmax output
 
-### CNN strength
+#### CNN strength
 Useful for detecting lexical distortions such as:
 - homograph-style manipulations
 - short suspicious token patterns
 - brand-like variations
 
-## Sieve-2 LSTM
+### Sieve-2 LSTM
 - Embedding dimension: 128
 - LSTM with 128 units
 - Dense layer with 64 ReLU units
 - Softmax output
 
-### LSTM strength
+#### LSTM strength
 Useful for learning:
 - token order
 - longer sequential patterns
 - suspicious subdomain structure
 
-## Sieve-2 BiLSTM
+### Sieve-2 BiLSTM
 - Bidirectional LSTM with 128 units
 - Better sequence context from both directions
 - Stronger handling of complex URL structure
 
-### BiLSTM strength
+#### BiLSTM strength
 Useful for:
 - camouflaged subdomains
 - context-sensitive sequential inconsistencies
 
-## Sieve-2 Regularization
+### Sieve-2 Regularization
 - Dropout rate: 0.5
 
-## Sieve-3 TinyBERT
+### Sieve-3 TinyBERT
 - Hugging Face TinyBERT implementation
 - 2 layers
-- hidden size 128
+- hidden size: 128
 - 2 attention heads
 - AdamW optimizer
 - learning rate: 5e-5
 
-The paper notes that this stage was tuned to prioritize recall for phishing and malware detection.
+This stage was tuned to prioritize recall for phishing and malware detection.
 
 ---
 
@@ -260,7 +269,7 @@ The paper notes that this stage was tuned to prioritize recall for phishing and 
 
 One of the main engineering advantages of NSC is that it does not send all samples to the heaviest model.
 
-According to the paper:
+According to the project results:
 - **Sieve-1** resolved about **75%** of URLs
 - **Sieve-2** handled about **14%** of URLs
 - **Sieve-3** handled the hardest **11%** of URLs
@@ -271,7 +280,7 @@ This demonstrates the practical value of the cascade for resource-efficient mali
 
 ## Results
 
-## Stage-wise Accuracy
+### Stage-wise Accuracy
 
 | Stage | Model | Accuracy |
 |---|---|---:|
@@ -280,9 +289,7 @@ This demonstrates the practical value of the cascade for resource-efficient mali
 | Sieve-3 | TinyBERT | 94.86% |
 | Final Pipeline | Neural Sieve Cascade | 97.92% |
 
----
-
-## Final Class-wise Metrics
+### Final Class-wise Metrics
 
 | Class | Precision | Recall | F1-score |
 |---|---:|---:|---:|
@@ -293,22 +300,33 @@ This demonstrates the practical value of the cascade for resource-efficient mali
 
 ---
 
-## Result Visualizations
+## Results Snapshot
 
-## Accuracy Comparison
-![Accuracy Comparison](assets/images/accuracy_comparison.png)
+<p align="center">
+  <img src="assets/images/accuracy_comparison.png" alt="Accuracy Comparison" width="700">
+</p>
 
-## Confusion Matrix
-![Confusion Matrix](assets/images/confusion_matrix.png)
+<details>
+  <summary><strong>View detailed result visualizations</strong></summary>
+  <br>
 
-## Precision Comparison
-![Precision Comparison](assets/images/precision.png)
+  <p align="center">
+    <img src="assets/images/confusion_matrix.png" alt="Confusion Matrix" width="520">
+  </p>
 
-## Recall Comparison
-![Recall Comparison](assets/images/recall.png)
+  <p align="center">
+    <img src="assets/images/precision.png" alt="Precision Comparison" width="700">
+  </p>
 
-## F1-score Comparison
-![F1-score Comparison](assets/images/f1_score.png)
+  <p align="center">
+    <img src="assets/images/recall.png" alt="Recall Comparison" width="700">
+  </p>
+
+  <p align="center">
+    <img src="assets/images/f1_score.png" alt="F1-score Comparison" width="700">
+  </p>
+
+</details>
 
 ---
 
@@ -328,6 +346,15 @@ a **multi-sieve architecture** can provide strong security performance while rem
 
 ---
 
+## Paper and Notebook
+
+- [Read the full project paper](paper/Malicious_URL_Detection.pdf)
+- Main implementation notebook: `notebooks/NSC_Final.ipynb`
+
+> If GitHub does not render the notebook or PDF preview correctly, download the file and open it locally in VS Code, Jupyter, Google Colab, or a PDF viewer.
+
+---
+
 ## Repository Structure
 
 ```text
@@ -343,20 +370,14 @@ a **multi-sieve architecture** can provide strong security performance while rem
 ├── data/
 │   └── malicious_phish_CSV.csv
 ├── docs/
+│   ├── DATASET_NOTE.md
 │   ├── PROJECT_OVERVIEW.md
 │   └── RESULTS_SUMMARY.md
 ├── notebooks/
 │   └── NSC_Final.ipynb
 ├── paper/
 │   └── Malicious_URL_Detection.pdf
-├── src/
+├── LICENSE
 ├── README.md
 ├── requirements.txt
 └── .gitignore
-
-## Quickstart
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/ashwinnaresh2005starzz-prog/neural-sieve-cascade.git
-cd neural-sieve-cascade
