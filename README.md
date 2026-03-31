@@ -1,10 +1,6 @@
 # Neural Sieve Cascade (NSC)
 
 <p align="center">
-  <img src="assets/images/workflow.png" alt="Neural Sieve Cascade Workflow" width="720">
-</p>
-
-<p align="center">
   <strong>Confidence-Driven Multi-Sieve Malicious URL Detection</strong><br>
   Logistic Regression + TF-IDF → CNN/LSTM/BiLSTM Ensemble → TinyBERT
 </p>
