@@ -52,7 +52,7 @@ Instead of sending every URL directly to a heavy model, NSC filters URLs progres
 ![Recall Comparison](assets/images/recall.png)
 
 ### F1-score Comparison
-![F1-score Comparison](assets/images/F1-score.png)
+![F1-score Comparison](assets/images/f1_score.png)
 
 ## Repository Structure
 ```text
