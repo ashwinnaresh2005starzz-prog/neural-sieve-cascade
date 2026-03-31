@@ -1,0 +1,29 @@
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+Thumbs.db
+
+# model files
+*.h5
+*.keras
+*.pt
+*.pth
+*.bin
+*.ckpt
+*.pkl
+
+# logs
+*.log
+
+# VS Code
+.vscode/
+
+# large generated files
+outputs/
+checkpoints/
