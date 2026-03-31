@@ -38,8 +38,8 @@ This project performs **four-class malicious URL classification** across:
 - Designed a **confidence-based escalation strategy** with threshold **0.90**
 - Achieved **97.92% final accuracy**
 - Evaluated on a **651,191 URL** dataset
-- Reduced false negatives for phishing and malware compared to standalone models
 - Structured to improve **real-time efficiency** by escalating only uncertain samples
+- Includes **workflow diagram, result plots, project paper, and end-to-end notebook**
 
 ---
 
@@ -196,7 +196,7 @@ This project uses the Kaggle **Malicious URLs dataset** for four-class malicious
 - `data/malicious_phish_CSV.csv`
 
 ### Original Source
-- Kaggle: *Malicious URLs dataset* by `sid321axn`
+- [Kaggle: Malicious URLs dataset](https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset)
 
 ### Example URLs
 
