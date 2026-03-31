@@ -1,6 +1,31 @@
 # Neural Sieve Cascade (NSC)
 
-Neural Sieve Cascade (NSC) is a **confidence-driven three-stage malicious URL detection framework** designed to balance **speed**, **accuracy**, and **real-time feasibility**. Instead of sending every URL directly to a heavy deep model, NSC progressively filters URLs through multiple sieves: a lightweight lexical model first, a deep learning ensemble second, and a transformer-based final resolver for the hardest cases.
+<p align="center">
+  <img src="assets/images/workflow.png" alt="Neural Sieve Cascade Workflow" width="720">
+</p>
+
+<p align="center">
+  <strong>Confidence-Driven Multi-Sieve Malicious URL Detection</strong><br>
+  Logistic Regression + TF-IDF → CNN/LSTM/BiLSTM Ensemble → TinyBERT
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Task-Malicious%20URL%20Detection-blue" alt="Task">
+  <img src="https://img.shields.io/badge/Classes-4-success" alt="Classes">
+  <img src="https://img.shields.io/badge/Accuracy-97.92%25-brightgreen" alt="Accuracy">
+  <img src="https://img.shields.io/badge/Dataset-651191%20URLs-orange" alt="Dataset Size">
+</p>
+
+---
+
+## Overview
+
+Neural Sieve Cascade (NSC) is a **confidence-driven three-stage malicious URL detection framework** designed to balance **speed**, **accuracy**, and **real-time feasibility**.
+
+Instead of sending every URL directly to a heavy deep learning model, NSC progressively filters URLs through multiple sieves:
+- a **lightweight lexical model** first
+- a **deep learning ensemble** second
+- a **transformer-based final resolver** for the hardest cases
 
 This project performs **four-class malicious URL classification** across:
 - **Benign**
@@ -12,12 +37,13 @@ This project performs **four-class malicious URL classification** across:
 
 ## Highlights
 
-- Confidence-driven **three-stage malicious URL detection pipeline**
-- Combines **TF-IDF + Logistic Regression**, **CNN/LSTM/BiLSTM voting**, and **TinyBERT**
-- Supports **four-class classification**: benign, defacement, phishing, malware
-- Achieved **97.92% final accuracy** on a **651,191 URL** dataset
-- Designed for **real-time efficiency** by escalating only low-confidence samples
-- Includes **workflow diagram, result plots, project paper, and end-to-end notebook**
+- Built a **three-stage malicious URL detection pipeline**
+- Combined **TF-IDF + Logistic Regression**, **CNN/LSTM/BiLSTM soft voting**, and **TinyBERT**
+- Designed a **confidence-based escalation strategy** with threshold **0.90**
+- Achieved **97.92% final accuracy**
+- Evaluated on a **651,191 URL** dataset
+- Reduced false negatives for phishing and malware compared to standalone models
+- Structured to improve **real-time efficiency** by escalating only uncertain samples
 
 ---
 
@@ -28,17 +54,18 @@ Malicious URLs remain one of the most common entry points for cyberattacks. They
 - malware delivery
 - credential theft
 - website defacement
-- brand spoofing and social engineering attacks
+- brand spoofing
+- social engineering attacks
 
 Traditional blacklist and rule-based systems are useful, but they often fail against:
 - newly generated malicious URLs
 - obfuscated domains
-- adversarial token manipulations
+- adversarial lexical manipulations
 - context-dependent phishing patterns
 
 A practical malicious URL detection system should therefore be:
 - **fast enough for real-time traffic**
-- **accurate enough for security use**
+- **accurate enough for security applications**
 - **robust enough for ambiguous and adversarial URLs**
 
 Neural Sieve Cascade was designed to address that trade-off.
@@ -49,7 +76,7 @@ Neural Sieve Cascade was designed to address that trade-off.
 
 The main idea behind NSC is simple:
 
-> Easy URLs should be classified quickly, while only difficult URLs should consume deeper and more expensive models.
+> Easy URLs should be classified quickly, while difficult URLs should be escalated to deeper and more expensive models only when needed.
 
 This leads to a **three-stage cascade**:
 
@@ -57,14 +84,14 @@ This leads to a **three-stage cascade**:
 2. **Sieve-2** handles harder cases using an ensemble of deep sequence models  
 3. **Sieve-3** processes only the most ambiguous URLs using TinyBERT  
 
-This staged design improves computational efficiency while preserving high final detection performance.
+This staged design improves computational efficiency while preserving strong final detection performance.
 
 ---
 
 ## Workflow
 
 <p align="center">
-  <img src="assets/images/workflow.png" alt="NSC Workflow" width="560">
+  <img src="assets/images/workflow.png" alt="NSC Workflow Diagram" width="760">
 </p>
 
 ---
@@ -133,7 +160,7 @@ A confidence-driven routing strategy controls movement between stages:
 - **Sieve-2** accepts predictions when confidence is **>= 0.90**
 - **Sieve-3** produces the final output for the remaining cases
 
-This prevents expensive models from being used on every URL and keeps the pipeline practical for real-time settings.
+This keeps the pipeline practical for real-time settings and avoids unnecessary heavy inference on all samples.
 
 ---
 
@@ -145,12 +172,12 @@ An adversarial URL such as:
 
 can move through the pipeline like this:
 
-- **Sieve-1** detects suspicious lexical signals but may still have insufficient confidence
+- **Sieve-1** detects suspicious lexical signals but still has insufficient confidence
 - **Sieve-2** examines local patterns and sequential token order using CNN, LSTM, and BiLSTM
-- **Sieve-3** uses TinyBERT to understand broader contextual inconsistency and produce the final phishing classification
+- **Sieve-3** uses TinyBERT to understand broader contextual inconsistency and produces the final phishing classification
 
-This example highlights the design goal of NSC:
-- **LR for speed**
+This highlights the design goal of NSC:
+- **Logistic Regression for speed**
 - **deep ensemble for structural ambiguity**
 - **TinyBERT for context-rich resolution**
 
@@ -226,10 +253,10 @@ The project paper reports training in **Google Colab** using:
 - Softmax output
 
 #### CNN Strength
-Useful for detecting lexical distortions such as:
+Useful for detecting:
 - homograph-style manipulations
 - short suspicious token patterns
-- brand-like variations
+- brand-like lexical variations
 
 ### Sieve-2 LSTM
 - Embedding dimension: 128
@@ -306,30 +333,32 @@ This demonstrates the practical value of the cascade for resource-efficient mali
 ## Results Snapshot
 
 <p align="center">
-  <img src="assets/images/accuracy_comparison.png" alt="Accuracy Comparison" width="760">
+  <img src="assets/images/accuracy_comparison.png" alt="Accuracy Comparison" width="820">
 </p>
 
-<details>
-  <summary><strong>View detailed result visualizations</strong></summary>
-  <br>
+---
 
-  <p align="center">
-    <img src="assets/images/confusion_matrix.png" alt="Confusion Matrix" width="560">
-  </p>
+## Detailed Result Visualizations
 
-  <p align="center">
-    <img src="assets/images/precision.png" alt="Precision Comparison" width="760">
-  </p>
+### Confusion Matrix
+<p align="center">
+  <img src="assets/images/confusion_matrix.png" alt="Confusion Matrix" width="620">
+</p>
 
-  <p align="center">
-    <img src="assets/images/recall.png" alt="Recall Comparison" width="760">
-  </p>
+### Precision Comparison
+<p align="center">
+  <img src="assets/images/precision.png" alt="Precision Comparison" width="820">
+</p>
 
-  <p align="center">
-    <img src="assets/images/f1_score.png" alt="F1-score Comparison" width="760">
-  </p>
+### Recall Comparison
+<p align="center">
+  <img src="assets/images/recall.png" alt="Recall Comparison" width="820">
+</p>
 
-</details>
+### F1-score Comparison
+<p align="center">
+  <img src="assets/images/f1_score.png" alt="F1-score Comparison" width="820">
+</p>
 
 ---
 
@@ -345,7 +374,8 @@ Some important takeaways from the reported results:
 - Sieve-1 handled most inputs cheaply, while TinyBERT was reserved for only the hardest cases
 
 This supports the main hypothesis of the project:
-a **multi-sieve architecture** can provide strong security performance while remaining more computationally practical than applying a heavy transformer to every URL.
+
+> A multi-sieve architecture can provide strong security performance while remaining more computationally practical than applying a heavy transformer to every URL.
 
 ---
 
