@@ -1,0 +1,54 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the project and refer to the associated paper."
+title: "Neural Sieve Cascade (NSC): Confidence-Driven Multi-Sieve Malicious URL Detection"
+type: software
+authors:
+  - family-names: "Naresh M"
+    given-names: "Ashwin"
+    affiliation: "Amrita School of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore, India"
+  - family-names: "Sa"
+    given-names: "Aditya"
+    affiliation: "Amrita School of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore, India"
+  - family-names: "R"
+    given-names: "Padmacharan"
+    affiliation: "Amrita School of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore, India"
+  - family-names: "B"
+    given-names: "Shree Santh"
+    affiliation: "Amrita School of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore, India"
+  - family-names: "Manimaran"
+    given-names: "S."
+    affiliation: "Amrita School of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore, India"
+repository-code: "https://github.com/ashwinnaresh2005starzz-prog/neural-sieve-cascade"
+url: "https://github.com/ashwinnaresh2005starzz-prog/neural-sieve-cascade"
+license: "MIT"
+keywords:
+  - malicious url detection
+  - cybersecurity
+  - phishing detection
+  - malware detection
+  - deep learning
+  - tinybert
+  - cnn
+  - lstm
+  - bilstm
+  - transformers
+  - url classification
+version: "1.0.0"
+date-released: 2026-04-08
+preferred-citation:
+  type: article
+  title: "Layered Deep Learning Approach for Malicious URL Detection via Neural Sieve Cascade"
+  authors:
+    - family-names: "Sa"
+      given-names: "Aditya"
+    - family-names: "Naresh M"
+      given-names: "Ashwin"
+    - family-names: "R"
+      given-names: "Padmacharan"
+    - family-names: "B"
+      given-names: "Shree Santh"
+    - family-names: "Manimaran"
+      given-names: "S."
+  journal: "Preprint"
+  year: 2026
+  notes: "Project paper included in the repository at paper/Malicious_URL_Detection.pdf"
